@@ -1,0 +1,78 @@
+# fly.toml app configuration file generated for little-sky-4513 on 2023-06-18T15:54:02-04:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = "little-sky-4513"
+primary_region = "iad"
+#SIGTERM
+kill_signal = "SIGINT" 
+kill_timeout = 5
+processes = [ ]
+[build]
+  image = "flyio/hellofly:latest"
+[deploy]
+# release_command=""
+[env]
+[experimental]
+allowed_public_ports = [ ]
+auto_rollback = true
+cmd = "start.sh"
+entrypoint = "sh"
+
+[mounts]
+source = "data"
+destination = "/data"
+
+[http_service]
+  internal_port = 8_080
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+
+[[services]]
+internal_port = 8_080
+processes = [ "app" ]
+protocol = "tcp"
+script_checks = [ ]
+
+  [services.concurrency]
+  hard_limit = 25
+  soft_limit = 20
+  type = "connections"
+
+  [[services.ports]]
+  handlers = [ "http" ]
+  port = 80
+  force_https = true
+
+  [[services.ports]]
+  handlers = [ "tls", "http" ]
+  port = 443
+
+  [[services.tcp_checks]]
+  grace_period = "1s"
+  interval = "15s"
+  restart_limit = 0
+  timeout = "2s"
+
+  [[services.http_checks]]
+  interval = "10s"
+  grace_period = "5s"
+  method = "get"
+  path = "/healthcheck"
+  protocol = "http"
+  timeout = "2s"
+  tls_skip_verify = false
+  headers = { }
+
+
+# ID: vol_e628r6gxgl1vwmnp
+# Name: data
+# App: little-sky-4513
+# Region: iad
+# Zone: 7806
+# Size GB: 3
+# Encrypted: true
+# Created at: 24 Jun 23 20:38 UTC
