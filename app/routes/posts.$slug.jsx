@@ -18,7 +18,7 @@ const PostSlug = () => {
   const { post, html } = useLoaderData();
   return (
     <main>
-      <h1>Some Post{post.title}</h1>
+      <h1>{post.title}</h1>
       <div id="markdown" dangerouslySetInnerHTML={{ __html: html }} />
     </main>
   );
