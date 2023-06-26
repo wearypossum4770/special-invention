@@ -1,5 +1,7 @@
 <!--  https://try-everywhere.thoughtspot.cloud/v2/#/everywhere/playground/liveboard -->
 
+- [Stored XSS Attacks](https://portswigger.net/web-security/cross-site-scripting/Stored)
+
 # Remix Indie Stack
 
 ![The Remix Indie Stack](https://repository-images.githubusercontent.com/465928257/a241fa49-bd4d-485a-a2a5-5cb8e4ee0abf)
