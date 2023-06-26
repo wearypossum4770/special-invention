@@ -5,7 +5,7 @@ const routes = [
   "app/routes/posts.admin.jsx",
   "app/routes/posts.admin._index.jsx",
   "app/routes/posts.admin.new.jsx",
-  'app/routes/posts.admin.$slug.jsx',
+  "app/routes/posts.admin.$slug.jsx",
 ];
 
 for (let i = 0; i < routes.length; i++) {
