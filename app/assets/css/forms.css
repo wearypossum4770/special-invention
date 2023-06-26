@@ -1,0 +1,12 @@
+form.blog-new-post-form {
+  width: 300px;
+}
+p.form-group {
+  display: flex;
+  flex-direction: column;
+}
+em.error-message {
+  padding: 5px 0 0 0;
+  color: rgba(172, 58, 62, 1);
+  align-self: center;
+}
