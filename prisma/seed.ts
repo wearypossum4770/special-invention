@@ -83,7 +83,38 @@ async function seed() {
       create: post,
     });
   }
+  const projects = [
+    {
+      id: '13011',
+      title: "MGO Dev (MGOD)",
+      subtitle: "Software",
+      description: "A software board for developers.",
+      projectKey: "MGOD",
+      projectType: "software",
+      boardId: '93',
+      type: "projects",
+      favourite: true,
+    },
+    {
+      id: '13034',
+      title: "MGO Amp Experience (MAE)",
+      subtitle: "Software",
+      description: "A software board for a/b testing.",
+      projectKey: "MAE",
+      projectType: "software",
+      boardId: '123',
+      type: "projects",
+      favourite: false,
+    },
+  ];
 
+  for (const project of projects) {
+    await prisma.project.upsert({
+      where: { id: project.id },
+      update: project,
+      create: project,
+    });
+  }
   console.log(`Database has been seeded. 🌱`);
 }
 
