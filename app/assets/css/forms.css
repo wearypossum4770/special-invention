@@ -14,3 +14,12 @@ em.error-message {
   color: rgba(172, 58, 62, 1);
   align-self: center;
 }
+div.blog-new-post-markdown {
+  padding: 0 20px;
+  align-self: self-start;
+}
+div.blog-new-post {
+  justify-content: space-evenly;
+  display: flex;
+  flex-direction: row;
+}
