@@ -7,7 +7,8 @@ const options = {
 }
 const katex = "katex: $c = \\pm\\sqrt{a^2 + b^2}$"
 function Post({ title, slug, markdown="" }) {
-  const text = markdown?.replace(/^[\u200B\u200C\u200D\u200E\u200F\uFEFF]/, "") 
+  
+  const text = markdown?.replace(/^[\u200B\u200C\u200D\u200E\u200F\uFEFF]/, "")?.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, "") 
   const context = Object.assign(this, {
     title,
     slug,
