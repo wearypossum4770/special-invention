@@ -1,0 +1,37 @@
+{
+  "name": "Bedrock",
+  "description": "The app powering www.mozilla.org.",
+  "repository": {
+    "url": "",
+    "type": "",
+    "clone": "",
+    "license": "MPL2",
+    "tests": ""
+  },
+  "participate": {
+    "home": "",
+    "docs": "",
+    "mailing-list": "",
+    "irc": "irc://irc.mozilla.org/#www",
+    "irc-contacts": ["someperson1", "someperson2", "someperson3"]
+  },
+  "chat": {
+    "url": "irc://irc.mozilla.org/#www",
+    "contacts": ["pmac", "jgmize", "malexis", "cmore"]
+  },
+  "bugs": {
+    "list": "",
+    "report": "",
+    "mentored": ""
+  },
+  "urls": {
+    "sit": "",
+    "cat": "",
+    "dev": "",
+    "test": "",
+    "preprod": "",
+    "prod": "",
+    "stage": ""
+  },
+  "keywords": ["python", "less-css", "django", "html5", "jquery"]
+}
