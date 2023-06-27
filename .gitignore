@@ -1,5 +1,5 @@
 node_modules
-
+**-lock.json
 /build
 /public/build
 .env
