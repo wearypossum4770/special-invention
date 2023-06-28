@@ -3,19 +3,63 @@ import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
 
-async function seed() {
-  const email = "rachel@remix.run";
 
+
+const first = {
+  get email() {
+    return `${this.username}@example.com`;
+  },
+  get username() {
+    return `${this.firstName}.${this.middleName ? this.middleName[0] : ""}.${
+      this.lastName
+    }`;
+  },
+  firstName: "john",
+  middleName: "daniel",
+  lastName: "doe",
+  password: "password1",
+};
+async function main() {
+  // https://www.prisma.io/docs/concepts/components/prisma-client/middleware/soft-delete-middleware#step-1-store-status-of-record
+  prisma
+  /***********************************/
+  /* SOFT DELETE MIDDLEWARE */
+  /***********************************/  
+  .$use(async (params, next) => {
+    if (params.action == 'delete' && process.env.NODE_ENV === 'production') {
+      Object.assign(params, { action: 'update', [params.args['data']]: { deletedAt: Date.now() } })
+    }
+    if (params.action == 'deleteMany' && process.env.NODE_ENV === 'production' && params.args.data != undefined) {
+      Object.assign(params, { action: 'updateMany', [params.args.data]: {deletedAt: Date.now() }})      
+    }
+    if (params.action == 'deleteMany' && process.env.NODE_ENV === 'production') {
+      Object.assign(params, { action: 'updateMany', [params.args['data']]: {deletedAt: Date.now() }})      
+    }
+    return next(params)
+  })
+ ;
+
+
+}
+async function seed() {
+  const { email, username, firstName, middleName, lastName, password } = first;
+  await prisma.note.deleteMany().catch(() => {
+    // no worries if it doesn't exist yet
+  });
   // cleanup the existing database
   await prisma.user.delete({ where: { email } }).catch(() => {
     // no worries if it doesn't exist yet
   });
 
-  const hashedPassword = await bcrypt.hash("racheliscool", 10);
+  const hashedPassword = await bcrypt.hash(password, 10);
 
   const user = await prisma.user.create({
     data: {
       email,
+      username,
+      firstName,
+      middleName,
+      lastName,
       password: {
         create: {
           hash: hashedPassword,
@@ -28,7 +72,7 @@ async function seed() {
     data: {
       title: "My first note",
       body: "Hello, world!",
-      userId: user.id,
+      profileId: user.id,
     },
   });
 
@@ -36,7 +80,7 @@ async function seed() {
     data: {
       title: "My second note",
       body: "Hello, world!",
-      userId: user.id,
+      profileId: user.id,
     },
   });
   const posts = [
@@ -85,24 +129,24 @@ async function seed() {
   }
   const projects = [
     {
-      id: '13011',
+      id: "13011",
       title: "MGO Dev (MGOD)",
       subtitle: "Software",
       description: "A software board for developers.",
       projectKey: "MGOD",
       projectType: "software",
-      boardId: '93',
+      boardId: "93",
       type: "projects",
       favourite: true,
     },
     {
-      id: '13034',
+      id: "13034",
       title: "MGO Amp Experience (MAE)",
       subtitle: "Software",
       description: "A software board for a/b testing.",
       projectKey: "MAE",
       projectType: "software",
-      boardId: '123',
+      boardId: "123",
       type: "projects",
       favourite: false,
     },

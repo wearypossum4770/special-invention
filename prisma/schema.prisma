@@ -7,6 +7,13 @@ generator client {
   provider = "prisma-client-js"
 }
 
+// enum TaskStatus {
+//   Pending
+//   InProgress
+//   Complete
+//   WontDo
+// }
+
 model User {
   id         String    @id @default(cuid())
   email      String    @unique
@@ -14,6 +21,7 @@ model User {
   firstName  String
   middleName String?
   lastName   String
+  deletedAt  DateTime?
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
   password   Password?
@@ -21,14 +29,15 @@ model User {
 }
 
 model Profile {
-  id        String   @id @default(cuid())
+  id        String    @id @default(cuid())
   avatar    String
   bio       String?
   notes     Note[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  userId    String   @unique
+  deletedAt DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId    String    @unique
 }
 
 model Password {
@@ -39,58 +48,87 @@ model Password {
 }
 
 model Note {
-  id    String @id @default(cuid())
-  title String
-  body  String
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  id        String    @id @default(cuid())
+  title     String
+  body      String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  profile   Profile   @relation(fields: [profileId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   profileId String
 }
 
 model Post {
-  slug        String    @id
+  id          Int       @id @default(autoincrement())
+  slug        String    @unique @default(cuid())
   title       String
   markdown    String?
   content     String?
   publishedAt DateTime?
+  //   author    User?   @relation(fields: [authorId], references: [id])
+  // authorId  Int
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
 }
 
+model TaskComments {
+  id           String   @id
+  idempotentId String   @default(uuid())
+  content      String
+  task         Task     @relation(fields: [idempotentId], references: [idempotentId])
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
-  model TaskComments {
-    id           String @id
-    idempotentId String @default(uuid())
-    content      String
-    task         Task   @relation(fields: [idempotentId], references: [idempotentId])
-  }
-  
-   
-  model Task {
-    id           Int          @id @default(autoincrement())
-    idempotentId String         @default(uuid()) @unique
-    title  String
-    content       String
-    isCompleted Boolean @default(false)
-    comments     TaskComments[]
-  }
+  deletedAt DateTime?
+}
 
-   
-  
+model Task {
+  id           Int            @id @default(autoincrement())
+  idempotentId String         @unique @default(uuid())
+  title        String
+  content      String
+  isCompleted  Boolean        @default(false)
+  comments     TaskComments[]
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  deletedAt    DateTime?
+}
 
-  model Project {
-    id           String  @id
-    idempotentId String  @default(uuid())
-    title        String
-    subtitle     String?
-    description  String?
-    projectKey   String
-    type         String
-    favourite    Boolean @default(false)
-    projectType  String
-  }
- 
-  
+model Project {
+  id           String    @id
+  idempotentId String    @default(uuid())
+  title        String
+  subtitle     String?
+  description  String?
+  projectKey   String
+  type         String
+  favourite    Boolean   @default(false)
+  projectType  String
+  deletedAt    DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+model Campaign {
+  id           Int       @id @default(autoincrement())
+  idempotentId String    @default(uuid())
+  campaignName String
+  campaignSlug String    @default(cuid())
+  version      Int
+  holdOut      Float
+  deletedAt    DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+model Experience {
+  id                    String    @id @default(uuid())
+  idempotentId          String    @default(uuid())
+  experienceName        String
+  experienceDescription String
+  priority              Int
+  deletedAt             DateTime?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+}
