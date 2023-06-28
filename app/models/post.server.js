@@ -3,19 +3,22 @@ import { marked } from "marked";
 import markedKatex from "marked-katex-extension";
 const options = {
   silent: false,
-  headerIds: false, baseUrl: false, throwOnError: false, output: "mathml",mangle: false,
-}
-const katex = "katex: $c = \\pm\\sqrt{a^2 + b^2}$"
-function Post({ title, slug, markdown="" }) {
-  
-  const text = markdown?.replace(/^[\u200B\u200C\u200D\u200E\u200F\uFEFF]/, "")?.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, "") 
+  headerIds: false,
+  baseUrl: false,
+  throwOnError: false,
+  output: "mathml",
+  mangle: false,
+};
+const katex = "katex: $c = \\pm\\sqrt{a^2 + b^2}$";
+function Post({ title, slug, markdown = "" }) {
+  const text = markdown
+    ?.replace(/^[\u200B\u200C\u200D\u200E\u200F\uFEFF]/, "")
+    ?.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, "");
   const context = Object.assign(this, {
     title,
     slug,
     markdown,
-    html: marked
-      .use(markedKatex(options))
-      .parse(text, options),
+    html: marked.use(markedKatex(options)).parse(text, options),
   });
 }
 
