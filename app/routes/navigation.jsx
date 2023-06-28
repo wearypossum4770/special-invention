@@ -12,6 +12,7 @@ const Navigation = () => {
       <nav className="main-navigation-container">
         <Link to="/posts">Blog</Link>
         <Link to="/projects">Projects</Link>
+        <Link to="/tasks">Tasks</Link>
         {user ? (
           <Link to="/notes">View Notes for {user.email}</Link>
         ) : (
