@@ -13,10 +13,8 @@ const prisma = new PrismaClient()
       user: {
         fullName: {
           needs: { firstName: true, middleName: true, lastName: true },
-          compute({ firstName, middleName, lastName}) {
-            return `${firstName} ${
-              middleName ? middleName : ""
-            }.${lastName}`;
+          compute({ firstName, middleName, lastName }) {
+            return `${firstName} ${middleName ? middleName : ""}.${lastName}`;
           },
         },
       },
@@ -31,19 +29,17 @@ const prisma = new PrismaClient()
       user: {
         displayName: {
           needs: { fullName: true, email: true },
-          compute({ fullName, email}) {
+          compute({ fullName, email }) {
             return `${fullName} <${email}>`;
           },
         },
       },
     },
   })
-    /***********************************/
+  /***********************************/
   /* OBFUSCATE PASSWORD MIDDLEWARE */
   /***********************************/
-  .$extends({
-
-  })
+  .$extends({})
   /***********************************/
   /* OBFUSCATE PASSWORD MIDDLEWARE */
   /***********************************/
@@ -58,7 +54,7 @@ const prisma = new PrismaClient()
         },
       },
     },
-  })
+  });
 async function main() {
   /**
    * Example query containing the `fullName` computed field in the response

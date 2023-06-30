@@ -15,30 +15,36 @@ const menuItems = [
   { id: 6, icon: "fa-solid fa-image", label: "gallery", to: "" },
 ];
 
-const Index = () => (
-  <aside className="blog-sidebar">
-    <form className="blog-sidebar-search-form">
-      <div className="form-group">
-        <label htmlFor="blog-sidebar-search-input">Site Search:</label>
-        <span>
-          <input id="blog-sidebar-search-input" type="search" name="sidebar" />
-          <button id="blog-sidebar-search-button" type="submit">
-            Search
-          </button>
-        </span>
-      </div>
-    </form>
-    <ul className="blog-sidebar-nav-list">
-      {menuItems.map((item) => (
-        <li key={item.id} className="blog-sidebar-nav-link">
-          <a href={item.to}>
-            <i className={item.icon}></i>
-            {item.label}
-          </a>
-        </li>
-      ))}
-    </ul>
-  </aside>
-);
+const Index = () => {
+  return (
+    <aside className="blog-sidebar">
+      <form className="blog-sidebar-search-form">
+        <div className="form-group">
+          <label htmlFor="blog-sidebar-search-input">Site Search:</label>
+          <span>
+            <input
+              id="blog-sidebar-search-input"
+              type="search"
+              name="sidebar"
+            />
+            <button type="button" id="blog-sidebar-search-button" type="submit">
+              Search
+            </button>
+          </span>
+        </div>
+      </form>
+      <ul className="blog-sidebar-nav-list">
+        {menuItems.map((item) => (
+          <li key={item.id} className="blog-sidebar-nav-link">
+            <a href={item.to}>
+              <i className={item.icon}></i>
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </aside>
+  );
+};
 
 export default Index;

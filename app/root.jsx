@@ -30,22 +30,19 @@ export const loader = async ({ request }) => {
 
 export default function App() {
   const logData = async (event) => {
-    if (document.visibilityState === 'visible') {
-      console.log("i'm here", window.location.pathname)
+    if (document.visibilityState === "visible") {
+      console.log("i'm here", window.location.pathname);
     }
-    if (document.visibilityState === 'hidden') {
+    if (document.visibilityState === "hidden") {
       // navigator.sendBeacon
       console.log("/log", window.analyticsData);
     }
- 
-  }
+  };
   try {
-    window.analyticsData = window.analyticsData || []
+    window.analyticsData = window.analyticsData || [];
     document.addEventListener("visibilitychange", logData(), { once: true });
-    
-   
   } catch (error) {
-    // 
+    //
   }
   return (
     <html lang="en" className="h-full">

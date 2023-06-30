@@ -28,6 +28,15 @@ model User {
   profile    Profile?
 }
 
+model AnonymousUser {
+  id           String     @id @unique @default(uuid())
+  idempotentId String     @unique @default(uuid())
+  slug         String     @unique @default(cuid())
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  pageViews    PageView[]
+}
+
 model Profile {
   id        String    @id @default(cuid())
   avatar    String
@@ -131,4 +140,18 @@ model Experience {
   deletedAt             DateTime?
   createdAt             DateTime  @default(now())
   updatedAt             DateTime  @updatedAt
+}
+
+model PageView {
+  id                 String        @id @default(uuid())
+  idempotentId       String        @default(uuid())
+  anonymousId        String        @default(uuid())
+  anonymous          AnonymousUser @relation(fields: [anonymousId], references: [id])
+  pageTitle          String
+  pageLocation       String
+  pagePath           String
+  pageReferrer       String?
+  userAgent          String
+  pageEncoding       String
+  engagementTimeMsec Int
 }

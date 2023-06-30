@@ -6,9 +6,7 @@ const prisma = new PrismaClient().$extends({
       isPublished: {
         needs: { publishedAt: true },
         compute({ publishedAt }) {
-          return (
-            publishedAt && !!publishedAt
-          );
+          return publishedAt && !!publishedAt;
         },
       },
     },

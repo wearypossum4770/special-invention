@@ -3,13 +3,13 @@ import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
 
-
-
 const first = {
   get email() {
     return `${this.username}@example.com`;
   },
-  get middleInitial() {return this.middleName ? this.middleName[0] : ""},
+  get middleInitial() {
+    return this.middleName ? this.middleName[0] : "";
+  },
   get username() {
     return `${this.firstName}.${this.middleInitial}.${this.lastName}`;
   },
@@ -20,25 +20,38 @@ const first = {
 };
 async function main() {
   // https://www.prisma.io/docs/concepts/components/prisma-client/middleware/soft-delete-middleware#step-1-store-status-of-record
-  
+
   /***********************************/
   /* SOFT DELETE MIDDLEWARE */
-  /***********************************/  
+  /***********************************/
   prisma.$use(async (params, next: Function) => {
-    if (params.action == 'delete' && process.env.NODE_ENV === 'production') {
-      Object.assign(params, { action: 'update', [params.args['data']]: { deletedAt: Date.now() } })
+    if (params.action == "delete" && process.env.NODE_ENV === "production") {
+      Object.assign(params, {
+        action: "update",
+        [params.args["data"]]: { deletedAt: Date.now() },
+      });
     }
-    if (params.action == 'deleteMany' && process.env.NODE_ENV === 'production' && params.args.data != undefined) {
-      Object.assign(params, { action: 'updateMany', [params.args.data]: {deletedAt: Date.now() }})      
+    if (
+      params.action == "deleteMany" &&
+      process.env.NODE_ENV === "production" &&
+      params.args.data != undefined
+    ) {
+      Object.assign(params, {
+        action: "updateMany",
+        [params.args.data]: { deletedAt: Date.now() },
+      });
     }
-    if (params.action == 'deleteMany' && process.env.NODE_ENV === 'production') {
-      Object.assign(params, { action: 'updateMany', [params.args['data']]: {deletedAt: Date.now() }})      
+    if (
+      params.action == "deleteMany" &&
+      process.env.NODE_ENV === "production"
+    ) {
+      Object.assign(params, {
+        action: "updateMany",
+        [params.args["data"]]: { deletedAt: Date.now() },
+      });
     }
-    return next(params)
-  })
- ;
-
-
+    return next(params);
+  });
 }
 async function seed() {
   const { email, username, firstName, middleName, lastName, password } = first;
