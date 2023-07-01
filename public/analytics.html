@@ -1,0 +1,28 @@
+<script>
+    window.sturdyDataLayer = window.sturdyDataLayer || [['js', Date.now()]]
+    const sturdy = (command, action, func,...args) => sturdyDataLayer.push([command, action, func, args])
+    const init = (event) => { const timeout = setTimeout(() => sturdy('load', '', '') && clearTimeout(timeout), 500)}
+    window.addEventListener("load", (event) => init);
+  const logger = async (event) => console.log(event)
+  const logData = async (event) => {
+  if (document.visibilityState === "visible") return event
+  if (document.visibilityState === "hidden") return event
+//   navigator.sendBeacon
+};
+
+const setup = () => {
+    document.addEventListener('freeze', logger);
+    document.addEventListener('resume', logger);
+    document.addEventListener("visibilitychange", logData(), { once: true });
+}
+const teardown = () => {
+    window.addEventListener("load", init);
+    document.addEventListener('freeze', logger);
+    document.addEventListener('resume', logger);
+    document.addEventListener("visibilitychange", logData(), { once: true });
+}
+setup()
+
+</script>
+
+
