@@ -10,8 +10,8 @@ export const identify = async ({ anonymousId, idempotentId }) =>
   prisma.anonymousUser.create({
     data: {
       idempotentId: idempotentId ? idempotentId : randomUUID(),
-      id: anonymousId ? anonymousId : randomUUID(),  
-    }
+      id: anonymousId ? anonymousId : randomUUID(),
+    },
   });
 export const getUserById = async (id) =>
   prisma.user.findUnique({ where: { id } });

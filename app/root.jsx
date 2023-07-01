@@ -1,5 +1,4 @@
 import { cssBundleHref } from "@remix-run/css-bundle";
-import { isRouteErrorResponse, useRouteError } from "@remix-run/react";
 import { json } from "@remix-run/node";
 import {
   Links,
@@ -8,6 +7,8 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  isRouteErrorResponse,
+  useRouteError,
 } from "@remix-run/react";
 
 import { getUser } from "~/session.server";
@@ -62,12 +63,12 @@ const getViewport = () => {
   try {
     return {
       viewport_height: window.innerHeight,
-      viewport_width: window.innerWidth
-    }
+      viewport_width: window.innerWidth,
+    };
   } catch (error) {
     //
   }
-}
+};
 const getForm = () => {
   try {
     const forms = document.querySelectorAll("[data-analytic-name]");
@@ -78,32 +79,30 @@ const extractClassList = ({ classList }) => ({
   classList: Array.from(classList),
 });
 export default function App() {
-  const handleClick = (event) => {
+  const handleClick = ({
+    x,
+    y,
+    timeStamp,
+    detail,
+    type,
+    _vts,
+    _reactName,
+    target,
+  }) => {
     const {
-      x,
-      y,
-      timeStamp,
-      detail,
-      type,
-      _vts,
-      _reactName,
-      target: {
-        __vueParentComponent,
-        __vnode,
-        scrollHeight,
-        offsetHeight,
-        clientHeight,
-        scrollWidth,
-        offsetWidth,
-        clientWidth,
-        classList,
-        nodeName,
-        id,
-      },
-    } = event;
-    console.log(event);
-    getForm();
-    console.log({
+      __vueParentComponent,
+      __vnode,
+      scrollHeight,
+      offsetHeight,
+      clientHeight,
+      scrollWidth,
+      offsetWidth,
+      clientWidth,
+      classList,
+      nodeName,
+      id,
+    } = target;
+    navigator.sendBeacon("", {
       ...getViewport(),
       ...getDocumentSize({
         scrollHeight,
