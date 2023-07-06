@@ -1,3 +1,4 @@
+- [Black Sheep Getting Started](https://www.neoteroi.dev/blacksheep/getting-started/) 
 <!--  https://try-everywhere.thoughtspot.cloud/v2/#/everywhere/playground/liveboard -->
 
 - [Stored XSS Attacks](https://portswigger.net/web-security/cross-site-scripting/Stored)
