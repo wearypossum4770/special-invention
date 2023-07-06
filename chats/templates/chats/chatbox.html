@@ -1,0 +1,35 @@
+<!-- chat/templates/chat/index.html -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Chat Rooms</title>
+  </head>
+  <body>
+    <div>
+      <label htmlfor="room-name-input"
+        >What chat room would you like to enter?</label
+      >
+      <input id="room-name-input" type="text" size="100" />
+    </div>
+    <dvi>
+      <button id="room-name-submit">Enter</button>
+    </dvi>
+    <script async type="module">
+      const enterRoom = async () =>
+        Object.assign(window.location, {
+          pathname: `/chat/${roomName.value}/`,
+        });
+      const handleSubmit = async ({ keyCode }) => {
+        if (keyCode === 13) {
+          submit.click();
+        }
+      };
+      const roomName = document.querySelector("#room-name-input");
+      const submit = document.querySelector("#room-name-submit");
+      submit.addEventListener("click", enterRoom);
+      roomName.focus();
+      roomName.addEventListener("keyup", handleSubmit);
+    </script>
+  </body>
+</html>

@@ -4,7 +4,9 @@ node_modules
 /build
 /public/build
 .env
-
+*/__pycache__/
+*.pem
+*.har
 /cypress/screenshots
 /cypress/videos
 /prisma/data.db
