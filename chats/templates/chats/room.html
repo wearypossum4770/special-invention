@@ -15,8 +15,19 @@
     {{ room_name|json_script:"room-name" }}
 
     <script>
-      const { createApp, ref, reactive } = Vue;
+      const { createApp, ref, reactive, readonly } = Vue;
+      const reducer = (state, {type, payload}) => {
+        switch (type) {
+          case 'SET_USERNAME':
+            return {...state, username: payload.username}
+          default:
+            return {...state}
+        }
+      }
 
+      const useReducer = (reducer, initialState) => {
+
+      }
       const state = reactive({
         username: "john.d.doe",
         chatMessages: [],
