@@ -1,6 +1,7 @@
 from django import forms
 from django.conf import settings
 from django.contrib.auth.forms import UserCreationForm
+
 from users.models import Profile
 
 User = settings.AUTH_USER_MODEL

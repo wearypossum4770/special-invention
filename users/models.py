@@ -1,18 +1,10 @@
 from typing import Iterable, Optional
-from django.conf import settings
-from django.db.models import (
-    Model,
-    CharField,
-    SlugField,
-    UUIDField,
-    ImageField,
-    TextField,
-    ForeignKey,
-    OneToOneField,
-    CASCADE,
-)
 
+from django.conf import settings
 from django.contrib.auth.models import AbstractUser
+from django.db.models import (CASCADE, CharField, ForeignKey, ImageField,
+                              Model, OneToOneField, SlugField, TextField,
+                              UUIDField)
 from PIL import Image
 
 # https://pillow.readthedocs.io/en/latest/handbook/tutorial.html
