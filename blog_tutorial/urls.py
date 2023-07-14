@@ -1,7 +1,7 @@
-from django.contrib import admin
-from django.urls import include, path, register_converter
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib import admin
+from django.urls import include, path, register_converter
 
 
 class FourDigitYearConverter:
@@ -20,8 +20,9 @@ register_converter(FourDigitYearConverter, "yyyy")
 
 urlpatterns = (
     path("chat/", include("chats.urls")),
-    path("admin/", admin.site.urls),    path("accounts/", include("django.contrib.auth.urls")),
-
+    path("admin/", admin.site.urls),
+    path("accounts/", include("django.contrib.auth.urls")),
+    path('', include('blog.urls')),
 )
 
 

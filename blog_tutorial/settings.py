@@ -48,6 +48,8 @@ THIRD_PARTY_APPS = (
     "daphne",
     "channels",
     "whitenoise.runserver_nostatic",
+    'rest_framework',
+    'rest_framework.authtoken',
 )
 
 INSTALLED_APPS = THIRD_PARTY_APPS + PROJECT_APPS + DJANGO_APPS
@@ -139,20 +141,16 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STATIC_HOST = environ.get("DJANGO_STATIC_HOST", "")
 STATIC_URL = STATIC_HOST + "/static/"
-
-# STATIC_URL = '/static/'
-
-# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-# MEDIA_URL = '/media/'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
-# LOGIN_REDIRECT_URL = 'blog-home'
-# LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'blog-home'
+LOGIN_URL = 'login'
 
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # EMAIL_HOST = 'smtp.gmail.com'
