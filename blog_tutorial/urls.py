@@ -22,9 +22,11 @@ urlpatterns = (
     path("chat/", include("chats.urls")),
     path("admin/", admin.site.urls),
     path("accounts/", include("django.contrib.auth.urls")),
-    path('', include('blog.urls')),
+    path('', include('blogs.urls')),
+    path('', include('users.urls')),
 )
 
 
 if settings.DEBUG:
     urlpatterns += tuple(static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT))
+
