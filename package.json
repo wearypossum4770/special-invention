@@ -26,7 +26,7 @@
   "dependencies": {
     "@opentelemetry/api": "^1.4.1",
     "@opentelemetry/sdk-trace-node": "^1.14.0",
-    "@prisma/client": "^4.15.0",
+    "@prisma/client": "4.16.2",
     "@remix-run/css-bundle": "^1.17.1",
     "@remix-run/node": "^1.17.1",
     "@remix-run/react": "^1.17.1",
@@ -83,7 +83,7 @@
     "prettier-plugin-sh": "^0.12.8",
     "prettier-plugin-tailwindcss": "^0.3.0",
     "prettier-plugin-toml": "^0.3.1",
-    "prisma": "^4.15.0",
+    "prisma": "4.16.2",
     "start-server-and-test": "^2.0.0",
     "tailwindcss": "^3.3.2",
     "ts-node": "^10.9.1",
