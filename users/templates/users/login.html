@@ -1,0 +1,36 @@
+{% extends "users/base.html" %}
+{% block content %}
+<style>
+    form.login-form {
+        width: 300px;
+        background-color: pink;
+    }
+    div.form-group-private  {
+        display: flex;
+        flex-direction: column;
+    }
+    div.form-group-private > label {
+        padding: 20px;
+        background-color: orange;
+
+    }
+    div.form-group-private > input {
+        margin: 0 auto;
+    }
+</style>
+
+<form class="login-form" method="post" action="{% url 'login' %}">
+    {% csrf_token %}
+    <div class="form-group-private">
+        {{ form.username.label_tag }}
+        {{ form.username }}
+    </div>
+    <div class="form-group-private">
+        {{ form.password.label_tag }}
+        {{ form.password }}
+    </div>
+</form>
+<script>
+    const username = document.getElementById('id_username')
+</script>
+{% endblock %}
