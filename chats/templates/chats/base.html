@@ -1,0 +1,75 @@
+{% load static %}
+<!-- https://web.dev/building-a-toast-component/ -->
+<!-- https://materializecss.com/toasts.html  -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% if title %}
+        <title>{{ title }}</title>
+    {% else %}
+        <title>Django Blog</title>
+    {% endif %}
+    <style>
+        section.toast-message-container {
+            position: fixed;
+            z-index: 1;
+            inset-inline: 0;
+            margin: 0 10px 0 0;
+            display: grid;
+            justify-items: start;
+            justify-content: end;
+            gap: 1vh;
+            pointer-events: none;
+
+        }
+        section.toast-message-container > output.toast-message {
+            padding: 20px 10px;
+            --_duration: 3s;
+      --_travel-distance: 0;
+  will-change: transform;
+  animation: 
+    fade-in 1s ease,
+    slide-in 1s ease,
+    fade-out 1s ease var(--_duration);
+        }
+        section.toast-message-container > output[data-message-status="warn"] {
+            background-color: lightpink;
+            color: red;
+        }
+        @keyframes fade-in {
+  from { opacity: 0 }
+}
+
+@keyframes fade-out {
+  to { opacity: 0 }
+}
+
+@keyframes slide-in {
+  from { transform: translateY(var(--_travel-distance, 10px)) }
+}
+    </style>
+</head>
+<body>
+    <aside>
+        <section class="toast-message-container" data-autohide="false">
+            <output role="status" data-message-status="warn" class="toast-message">Item added to cart</output>
+            <output role="status" class="toast-message">Something else</output>
+        </section>
+<!--         
+        {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+      {% block content %}{% endblock %} -->
+
+    </aside>
+    <main>
+
+    </main>
+</body>
+</html>
