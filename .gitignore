@@ -4,7 +4,7 @@ node_modules
 /build
 /public/build
 .env
-*/__pycache__/
+**/__pycache__/
 *.pem
 *.har
 /cypress/screenshots
