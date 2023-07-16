@@ -19,8 +19,14 @@ import "~/assets/css/forms.css";
 import "~/assets/css/main.css";
 import "~/assets/css/navigation.css";
 import Navigation from "~/routes/navigation.jsx";
+import HeaderTitle from '~/components/header-title.jsx';
+
 export const links = () => [
   // { rel: "stylesheet", href: stylesheet },
+  {
+    rel: "stylesheet",
+    href: "https://unpkg.com/modern-css-reset@1.4.0/dist/reset.min.css",
+  },
   ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
 ];
 
@@ -28,172 +34,35 @@ export const loader = async ({ request }) => {
   return json({ user: await getUser(request) });
 };
 
-const getDocumentSize = ({
-  scrollWidth,
-  offsetWidth,
-  clientWidth,
-  scrollHeight,
-  offsetHeight,
-  clientHeight,
-}) => {
-  try {
-    return {
-      document_height: Math.max.apply(this, [
-        document.body.scrollHeight,
-        scrollHeight,
-        document.body.offsetHeight,
-        offsetHeight,
-        document.body.clientHeight,
-        clientHeight,
-      ]),
-      document_width: Math.max.apply(this, [
-        doument.body.scrollWidth,
-        scrollWidth,
-        doument.body.offsetWidth,
-        offsetWidth,
-        doument.body.clientWidth,
-        clientWidth,
-      ]),
-    };
-  } catch (error) {
-    //
-  }
-};
-const getViewport = () => {
-  try {
-    return {
-      viewport_height: window.innerHeight,
-      viewport_width: window.innerWidth,
-    };
-  } catch (error) {
-    //
-  }
-};
-const getForm = () => {
-  try {
-    const forms = document.querySelectorAll("[data-analytic-name]");
-    console.log(forms);
-  } catch (error) {}
-};
-const extractClassList = ({ classList }) => ({
-  classList: Array.from(classList),
-});
-export default function App() {
-  const handleClick = ({
-    x,
-    y,
-    timeStamp,
-    detail,
-    type,
-    _vts,
-    _reactName,
-    target,
-  }) => {
-    const {
-      __vueParentComponent,
-      __vnode,
-      scrollHeight,
-      offsetHeight,
-      clientHeight,
-      scrollWidth,
-      offsetWidth,
-      clientWidth,
-      classList,
-      nodeName,
-      id,
-    } = target;
-    navigator.sendBeacon("", {
-      ...getViewport(),
-      ...getDocumentSize({
-        scrollHeight,
-        offsetHeight,
-        clientHeight,
-        scrollWidth,
-        offsetWidth,
-        clientWidth,
-      }),
-      vue_framework: !!__vueParentComponent || !!__vnode,
-      react_framework: !!_reactName,
-      event_time: _vts ?? Date.now(),
-      event_type: 1,
-      detail,
-      event_action: type.toUpperCase(),
-      class_list: extractClassList({ classList }),
-      elemnent_type: nodeName,
-      id,
-      x,
-      y,
-      waterfall: timeStamp,
-    });
-  };
-  try {
-    pipButton.addEventListener("click", async () => {
-      const player = document.querySelector("#player");
+const App = () => (
+  <html lang="en" className="h-full">
+    <head>
+      <meta charSet="utf-8" />
+      <meta name="viewport" content="width=device-width,initial-scale=1" />
 
-      // Open a Picture-in-Picture window.
-      const pipWindow = await documentPictureInPicture.requestWindow();
-
-      // Move the player to the Picture-in-Picture window.
-      pipWindow.document.body.append(player);
-    });
-  } catch (error) {}
-  return (
-    <html lang="en" className="h-full">
-      <head>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width,initial-scale=1" />
-
-        <Meta />
-        <link
-          rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/katex.min.css"
-          integrity="sha384-bYdxxUwYipFNohQlHt0bjN/LCpueqWz13HufFEV1SUatKs1cm4L6fFgCi1jT643X"
-          crossOrigin="anonymous"
-        />
-        <Links />
-      </head>
-      <body className="h-full">
-        {/* <!-- Google Tag Manager (noscript) --> */}
-        <noscript>
-          <iframe
-            src="https://www.googletagmanager.com/ns.html?id=GTM-KDG8N4P&gtm_auth=_0B6EdbI8a69X2_kVEUsxQ&gtm_preview=env-2&gtm_cookies_win=x"
-            height="0"
-            width="0"
-            style={{ display: "none", visibility: "hidden" }}
-          ></iframe>
-        </noscript>
-        {/* <!-- End Google Tag Manager (noscript) --> */}
-        <Navigation />
-        <form name="cloud_login"></form>
-        <form data-analytic-name="cloud_login"></form>
-        <form id="cloud_login"></form>
-        <button style={{ display: "block", padding: "50px" }} id="pipButton">
-          Open Picture-in-Picture window
-        </button>
-        <button
-          style={{ display: "block", padding: "50px" }}
-          id="step-heading"
-          className="text-xl"
-          onClick={handleClick}
-        >
-          Click Me
-        </button>
-        <div id="playerContainer">
-          <div id="player">
-            <video id="video"></video>
-          </div>
-        </div>
-        <Outlet />
-        <ScrollRestoration />
-        <script src="https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/marked-highlight/lib/index.umd.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/marked-katex-extension/lib/index.umd.js"></script>
-        <Scripts />
-        <LiveReload />
-      </body>
-    </html>
-  );
-}
+      <Meta />
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/katex.min.css"
+        integrity="sha384-bYdxxUwYipFNohQlHt0bjN/LCpueqWz13HufFEV1SUatKs1cm4L6fFgCi1jT643X"
+        crossOrigin="anonymous"
+      />
+      <Links />
+    </head>
+    <body className="h-full">
+      <HeaderTitle />
+      <main>
+      <Outlet />
+      <ScrollRestoration />
+      <script src="https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/marked-highlight/lib/index.umd.js"></script>
+      <Scripts />
+      <LiveReload />
+      </main>
+    </body>
+  </html>
+);
+export default App;
 export function ErrorBoundary() {
   const error = useRouteError();
 
