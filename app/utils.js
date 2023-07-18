@@ -1,6 +1,6 @@
 import { useMatches } from "@remix-run/react";
 import { useMemo } from "react";
-
+// https://github.com/vuelidate/vuelidate/tree/next
 const DEFAULT_REDIRECT = "/";
 
 /**
@@ -60,5 +60,6 @@ export function useUser() {
 }
 
 export function validateEmail(email) {
-  return typeof email === "string" && email.length > 3 && email.includes("@");
+  console.log(email, email.constructor.name)
+  return email && email.constructor.name === "String" && email.length > 3 && email.includes("@");
 }

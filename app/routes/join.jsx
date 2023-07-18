@@ -7,56 +7,97 @@ import { createUserSession, getUserId } from "~/session.server";
 import { safeRedirect, validateEmail } from "~/utils";
 const usermodel = [
   {
-    label: "email address",
-    type: null,
+    disabled: false,
+    placeholder: '',
+    hidden: false,
+    enterKeyHint: 'next',
+    label: "Email Address",
+    type: 'email',
     required: false,
-    get id() {
-      return this.autoComplete;
-    },
+    key: 1,
+    id: 'email-address',
     name: "email",
     get autoComplete() {
       return this.name;
     },
   },
   {
-    label: "username",
-    type: null,
+    disabled: false,
+    placeholder: '',
+    hidden: false,
+    enterKeyHint: 'next',
+    label: "Username",
+    type: "email",
     name: "username",
     required: false,
-    get id() {
-      return this.autoComplete;
-    },
+    key: 2,
+    id: 'username',
     get autoComplete() {
       return this.name;
     },
   },
   {
-    label: "first name:",
+    disabled: false,
+    placeholder: "",
+    type: 'password',
+    autoComplete: 'new-password',
+    required: true,
+    enterKeyHint: 'next',
+    id:'new-password',
+    key: 3,
+    name: 'password',
+    label: "Password",
+    hidden: false,
+  },
+  {
+    disabled: false,
+    placeholder: '',
+    hidden: false,
+    enterKeyHint: 'next',
+    label: "Confirm password",
+    type: 'password',
+    required: false,
+    key: 4,
+    id: 'confirm-new-password',
+    name: "passwordConfirmation",
+    autoComplete: 'new-password',
+  },
+  {
+    disabled: false,
+    placeholder: '',
+    hidden: false,
+    enterKeyHint: 'next',
+    label: "First Name:",
     type: null,
     required: false,
-    get id() {
-      return this.autoComplete;
-    },
+    key: 5,
+    id: 'first-name',
     name: "firstName",
     autoComplete: "given-name",
   },
   {
-    label: "middle name:",
+    disabled: false,
+    placeholder: '',
+    hidden: false,
+    enterKeyHint: 'next',
+    label: "Middle Name:",
     type: null,
     required: false,
-    get id() {
-      return this.autoComplete;
-    },
+    key: 6,
+    id: 'middle-name',
     name: "middleName",
     autoComplete: "additional-name",
   },
   {
-    label: "last name:",
+    disabled: false,
+    placeholder: '',
+    hidden: false,
+    enterKeyHint: 'next',
+    label: "Last Name:",
     type: null,
     required: false,
-    get id() {
-      return this.autoComplete;
-    },
+    key: 7,
+    id: 'last-name',
     name: "lastName",
     autoComplete: "family-name",
   },
@@ -70,12 +111,11 @@ export const loader = async ({ request }) => {
 
 export const action = async ({ request }) => {
   const formData = await request.formData();
-  const fields = usermodel.map((field) => ({
-    [field.name]: formData.get(field.name),
-  }));
-
-  const email = formData.get("email");
-  const password = formData.get("password");
+  const { email,
+    username,
+    firstName,
+    middleName,
+    lastName,password,...args} = usermodel.reduce((accum, field) =>  Object.assign(accum, {[field.name]:formData.get(field.name)}),{});
   const redirectTo = safeRedirect(formData.get("redirectTo"), "/");
 
   if (!validateEmail(email)) {
@@ -106,13 +146,23 @@ export const action = async ({ request }) => {
         errors: {
           email: "A user already exists with this email",
           password: null,
+          username: null,
+          firstName: null,
+          middleName: null,
+          lastName: null,
         },
       },
-      { status: 400 }
+      { status: 403 }
     );
   }
-
-  const user = await createUser(email, password);
+  const user = await createUser({
+    email,
+    username,
+    firstName,
+    middleName,
+    lastName,
+    password
+  });
 
   return createUserSession({
     redirectTo,
@@ -123,7 +173,9 @@ export const action = async ({ request }) => {
 };
 
 export const meta = () => [{ title: "Sign Up" }];
-
+const sendToAnalytics = async ({ target: { autoComplete, ...args}, ...rest}) => {
+  console.log({autoComplete, ...args, ...rest})
+}
 export default function Join() {
   const [searchParams] = useSearchParams();
   const redirectTo = searchParams.get("redirectTo") ?? undefined;
@@ -133,79 +185,87 @@ export default function Join() {
     {}
   );
   refs.usernameIsEmail = useRef(false);
+  const copyEmail = async (value) => {
+    if (value !== 'username') return value
+    if (refs.usernameIsEmail.current) {
+      refs.username.current.value = refs.email.current.value;
+      return value
+    }
+  };
 
-  const markUsernameAsEmail = () =>
-    (refs.username.current.value = refs.email.current.value);
+
+  const preventValidation = ({ target }) => target.setCustomValidity('')   
+  const handleMarkUsernameAsEmail = (event) => {
+    unmarkUsernameAsEmail(event);
+    markUsernameAsEmail(event);
+  };
+  const unmarkUsernameAsEmail = ({ target: { checked } }) =>
+    (refs.username.current.value = "");
+  const markUsernameAsEmail = ({ target: { checked } }) =>
+    (refs.usernameIsEmail.current = checked);
 
   useEffect(() => {
     if (actionData?.errors?.email) {
-      refs.emailRef.current?.focus();
+      refs.email.current?.focus();
     } else if (actionData?.errors?.password) {
-      refs.passwordRef.current?.focus();
+      refs.password.current?.focus();
     }
   }, [actionData]);
 
   return (
-    <div className="flex min-h-full flex-col justify-center">
-      <div className="mx-auto w-full max-w-md px-8">
-        <Form method="post" className="space-y-6">
-          {usermodel.map((field) => (
-            <div>
-              <label htmlFor={field.id}>{field.label}</label>
+    <Form method="post" className="main-login-form">
+      {usermodel.map((field) => (
+        <div className="form-group" key={field.key}>
+          <label className="form-group-label" htmlFor={field.id}>
+            {field.label}
+          </label>
+          <input
+            className="form-group-input"
+            ref={refs[field.name]}
+            name={field.name}
+            defaultValue={field.value}
+            aria-invalid={actionData?.errors?.[field.name] ? true : undefined}
+            aria-describedby={`${field.id}-error`}
+            type={field.type}
+            required={field.required}
+            id={field.id}
+            onBlur={()=> sendToAnalytics && copyEmail('username')}
+            onFocus={()=> sendToAnalytics && copyEmail('username')}
+            autoComplete={field.autoComplete}
+          />
+          {field.name === "username" ? (
+            <small>
+              {" "}
+              <label htmlFor="username-is-email">Use email for username</label>
               <input
-                ref={refs[field.name]}
-                name={field.name}
-                aria-invalid={
-                  actionData?.errors?.[field.name] ? true : undefined
-                }
-                aria-describedby={`${field.id}-error`}
-                type={field.type}
-                required={field.required}
-                id={field.id}
-                key={field.id}
-                autoComplete={field.autoComplete}
+                id="username-is-email"
+                onInvalid={preventValidation}
+                type="checkbox"
+                name="usernameIsEmail"
+                onChange={handleMarkUsernameAsEmail}
               />
-              {field.name === "username" ? (
-                <small >
-                  {" "}
-                  <label htmlFor="username-is-email">
-                    Use email for username
-                  </label>
-                  <input
-                  
-                    type="checkbox"
-                    name="usernameIsEmail"
-                    onChange={markUsernameAsEmail}
-                  />
-                </small>
-              ) : null}
-              {actionData?.errors?.[field.name] && (
-                <span>{actionData?.errors?.[field.name]}</span>
-              )}
-            </div>
-          ))}
-          <input type="hidden" name="redirectTo" value={redirectTo} />
-          <button
-            type="submit"
-           
+            </small>
+          ) : null}
+          {actionData?.errors?.[field.name] && (
+            <span>{actionData?.errors?.[field.name]}</span>
+          )}
+        </div>
+      ))}
+      <input type="hidden" name="redirectTo" value={redirectTo} />
+      <button type="submit">Create Account</button>
+      <div>
+        <div>
+          Already have an account?{" "}
+          <Link
+            to={{
+              pathname: "/login",
+              search: searchParams.toString(),
+            }}
           >
-            Create Account
-          </button>
-          <div>
-            <div>
-              Already have an account?{" "}
-              <Link
-                to={{
-                  pathname: "/login",
-                  search: searchParams.toString(),
-                }}
-              >
-                Log in
-              </Link>
-            </div>
-          </div>
-        </Form>
+            Log in
+          </Link>
+        </div>
       </div>
-    </div>
+    </Form>
   );
 }

@@ -18,16 +18,18 @@ import "~/assets/css/dashboard.css";
 import "~/assets/css/forms.css";
 import "~/assets/css/main.css";
 import "~/assets/css/navigation.css";
-import Navigation from "~/routes/navigation.jsx";
+import "~/assets/css/login-form.css";
+// import Navigation from "~/routes/navigation.jsx";
 import HeaderTitle from '~/components/header-title.jsx';
 
 export const links = () => [
   // { rel: "stylesheet", href: stylesheet },
   {
     rel: "stylesheet",
+    media: "screen and (min-width: 100px)", 
     href: "https://unpkg.com/modern-css-reset@1.4.0/dist/reset.min.css",
   },
-  ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
+  ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref, media: "screen and (min-width: 100px)" }] : []),
 ];
 
 export const loader = async ({ request }) => {
@@ -43,6 +45,7 @@ const App = () => (
       <Meta />
       <link
         rel="stylesheet"
+        media="screen and (min-width: 100px)"
         href="https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/katex.min.css"
         integrity="sha384-bYdxxUwYipFNohQlHt0bjN/LCpueqWz13HufFEV1SUatKs1cm4L6fFgCi1jT643X"
         crossOrigin="anonymous"

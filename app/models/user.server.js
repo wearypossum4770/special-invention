@@ -21,10 +21,20 @@ export const getUserByEmail = async (email) =>
 
 const hashedPassword = ({ password }) => bcrypt.hash(password, 10);
 
-export const createUser = async (email, password) =>
+export const createUser = async ({    email,
+  username,
+  firstName,
+  middleName,
+  lastName,
+  password
+}) =>
   prisma.user.create({
     data: {
       email,
+      username,
+      firstName,
+      middleName,
+      lastName,    
       password: {
         create: {
           hash: await hashedPassword({ password }),
